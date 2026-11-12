@@ -1,14 +1,14 @@
 
 import streamlit as st
 import streamlit.components.v1 as components
-
+import datos
 # --------------------------------------------------
 # CONFIGURACIÓN
 # --------------------------------------------------
 
 st.set_page_config(
     page_title="Bosques del Perú",
-    page_icon="🌳",
+    page_icon="assets/hoja.svg",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -360,11 +360,29 @@ elif seccion == "ranking":
         st.query_params["seccion"] = "inicio"
         st.rerun()
 
-    st.info(
-        "En esta sección construiremos el Top 15 departamental "
-        "y el filtro para seleccionar el año de análisis."
+    # Cargar los datos
+    df = datos.cargar_datos()
+
+    # Seleccionar el año
+    anios = sorted(df["ANIO"].dropna().unique())
+
+    anio_seleccionado = st.selectbox(
+        "Selecciona el año:",
+        anios
+    )
+    # Obtener el ranking del año seleccionado
+    ranking = datos.obtener_ranking(df, anio_seleccionado)
+
+    # Título del gráfico
+    st.subheader(
+    f"Pérdida de bosque por departamento - {anio_seleccionado}"
     )
 
+    # Gráfico de barras horizontal
+    st.bar_chart(
+    ranking,
+    horizontal=True
+    )
 
 # --------------------------------------------------
 # EVOLUCIÓN ANUAL
