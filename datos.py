@@ -65,6 +65,12 @@ def obtener_resumen_general(df):
 
 
     return perdida_total, anio_maximo, departamento_maximo
+# FUNCIÓN 6: Obtener pérdida anual de bosque
+def obtener_perdida_anual(df):
+
+    perdida_anual = df.groupby("ANIO")["PERDIDA_BOSQUE"].sum()
+
+    return perdida_anual.reset_index()
 
 # PRUEBA DEL PROGRAMA
 if __name__ == "__main__":
@@ -82,3 +88,5 @@ if __name__ == "__main__":
     print(obtener_evolucion(df, ["UCAYALI"]))
     print("\nResumen general de pérdida de bosque:")
     print(obtener_resumen_general(df))
+    print("\nPérdida anual de bosque (2001-2022):")
+    print(obtener_perdida_anual(df))
