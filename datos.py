@@ -53,7 +53,18 @@ def obtener_evolucion(df, departamentos=None):
 def obtener_datos_mapa(df, anio=None):
     ranking = obtener_ranking(df, anio)
     return ranking.reset_index()
+# FUNCIÓN 5: Obtener estadísticas generales
+def obtener_resumen_general(df):
 
+    perdida_total = df["PERDIDA_BOSQUE"].sum()
+    perdida_por_anio = df.groupby("ANIO")["PERDIDA_BOSQUE"].sum()
+
+    anio_maximo = perdida_por_anio.idxmax()
+    ranking = obtener_ranking(df)
+    departamento_maximo = ranking.idxmax()
+
+
+    return perdida_total, anio_maximo, departamento_maximo
 
 # PRUEBA DEL PROGRAMA
 if __name__ == "__main__":
@@ -69,3 +80,5 @@ if __name__ == "__main__":
     print(obtener_datos_mapa(df, 2020))
     print("\nEvolución anual de Ucayali:")
     print(obtener_evolucion(df, ["UCAYALI"]))
+    print("\nResumen general de pérdida de bosque:")
+    print(obtener_resumen_general(df))
