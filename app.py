@@ -244,7 +244,7 @@ if seccion == "inicio":
 
             <nav class="navegacion">
 
-                <a class="opcion" href="?seccion=inicio" target="_top">
+                <a class="opcion" href="?seccion=inicio" target="_blank">
                     <svg class="icono" viewBox="0 0 24 24"
                          fill="none" stroke="currentColor"
                          stroke-width="1.5">
@@ -257,7 +257,7 @@ if seccion == "inicio":
                     </span>
                 </a>
 
-                <a class="opcion" href="?seccion=mapa" target="_top">
+                <a class="opcion" href="?seccion=mapa" target="_blank">
                     <svg class="icono" viewBox="0 0 24 24"
                          fill="none" stroke="currentColor"
                          stroke-width="1.5">
@@ -270,7 +270,7 @@ if seccion == "inicio":
                     </span>
                 </a>
 
-                <a class="opcion" href="?seccion=ranking" target="_top">
+                <a class="opcion" href="?seccion=ranking" target="_blank">
                     <svg class="icono" viewBox="0 0 24 24"
                          fill="none" stroke="currentColor"
                          stroke-width="1.5">
@@ -284,7 +284,7 @@ if seccion == "inicio":
                     </span>
                 </a>
 
-                <a class="opcion" href="?seccion=evolucion" target="_top">
+                <a class="opcion" href="?seccion=evolucion" target="_blank">
                     <svg class="icono" viewBox="0 0 24 24"
                          fill="none" stroke="currentColor"
                          stroke-width="1.5">
