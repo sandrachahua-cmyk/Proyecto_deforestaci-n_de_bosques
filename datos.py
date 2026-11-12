@@ -49,6 +49,12 @@ def obtener_evolucion(df, departamentos=None):
 
     return evolucion
 
+# FUNCIÓN 4: Preparar datos para el mapa departamental
+def obtener_datos_mapa(df, anio=None):
+    ranking = obtener_ranking(df, anio)
+    return ranking.reset_index()
+
+
 # PRUEBA DEL PROGRAMA
 if __name__ == "__main__":
 
@@ -59,3 +65,7 @@ if __name__ == "__main__":
 
     print("\nRanking del año 2020:")
     print(obtener_ranking(df, 2020))
+    print("\nDatos del mapa del año 2020:")
+    print(obtener_datos_mapa(df, 2020))
+    print("\nEvolución anual de Ucayali:")
+    print(obtener_evolucion(df, ["UCAYALI"]))
