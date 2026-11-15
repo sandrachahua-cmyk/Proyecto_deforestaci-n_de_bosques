@@ -1,5 +1,6 @@
 
 import streamlit as st
+import plotly.express as px
 import streamlit.components.v1 as components
 import datos
 # --------------------------------------------------
@@ -244,7 +245,7 @@ if seccion == "inicio":
 
             <nav class="navegacion">
 
-                <a class="opcion" href="?seccion=inicio" target="_blank">
+                <a class="opcion" href="/?seccion=inicio" target="_top">
                     <svg class="icono" viewBox="0 0 24 24"
                          fill="none" stroke="currentColor"
                          stroke-width="1.5">
@@ -257,7 +258,7 @@ if seccion == "inicio":
                     </span>
                 </a>
 
-                <a class="opcion" href="?seccion=mapa" target="_blank">
+                <a class="opcion" href="/?seccion=mapa" target="_top">
                     <svg class="icono" viewBox="0 0 24 24"
                          fill="none" stroke="currentColor"
                          stroke-width="1.5">
@@ -270,7 +271,7 @@ if seccion == "inicio":
                     </span>
                 </a>
 
-                <a class="opcion" href="?seccion=ranking" target="_blank">
+                <a class="opcion" href="/?seccion=ranking" target="_top">
                     <svg class="icono" viewBox="0 0 24 24"
                          fill="none" stroke="currentColor"
                          stroke-width="1.5">
@@ -284,7 +285,7 @@ if seccion == "inicio":
                     </span>
                 </a>
 
-                <a class="opcion" href="?seccion=evolucion" target="_blank">
+                <a class="opcion" href="/?seccion=evolucion" target="_top">
                     <svg class="icono" viewBox="0 0 24 24"
                          fill="none" stroke="currentColor"
                          stroke-width="1.5">
@@ -304,11 +305,7 @@ if seccion == "inicio":
     </html>
     """
 
-    components.html(
-        portada,
-        height=760,
-        scrolling=False
-    )
+    st.html(portada)
 
 
 # --------------------------------------------------
@@ -377,13 +374,43 @@ elif seccion == "ranking":
     st.subheader(
     f"Pérdida de bosque por departamento - {anio_seleccionado}"
     )
+    ranking_df = ranking.rename("PERDIDA_BOSQUE").reset_index()
+    ranking_df.columns = ["DEPARTAMENTO", "PERDIDA_BOSQUE"]
+    
+    #crear graf de barra horiz
+    fig = px.bar(
+    ranking_df,
+    x="PERDIDA_BOSQUE",
+    y="DEPARTAMENTO",
+    orientation="h",
+    labels={
+        "PERDIDA_BOSQUE": "Pérdida de bosque",
+        "DEPARTAMENTO": "Departamento"
+    }
+)
+    #mostrar de mayor a menor
+    fig.update_layout(
+    yaxis={"autorange": "reversed"}
+)
+    #Format de números en español
+    fig.update_layout(separators=",.")
 
-    # Gráfico de barras horizontal
-    st.bar_chart(
-    ranking,
-    horizontal=True
-    )
+    fig.update_xaxes(
+    title_text="Pérdida de bosque (ha)",
+    tickformat=",.0f"
+)
 
+    #Personalizar info al pasar el cursos
+    fig.update_traces(
+    hovertemplate=
+    "<b>Departamento:</b> %{y}<br>"
+    "<b>Pérdida de bosque:</b> %{x:,.2f} ha"
+    "<extra></extra>"
+)
+
+    #Mostrar el graf
+    st.plotly_chart(fig, use_container_width=True)
+#ordenar los departamentos de 
 # --------------------------------------------------
 # EVOLUCIÓN ANUAL
 # --------------------------------------------------
