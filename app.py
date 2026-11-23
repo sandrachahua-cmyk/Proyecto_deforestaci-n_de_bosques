@@ -1,8 +1,8 @@
-
 import streamlit as st
 import plotly.express as px
 import streamlit.components.v1 as components
 import datos
+from bosque import mostrar_bosque
 # --------------------------------------------------
 # CONFIGURACIÓN
 # --------------------------------------------------
@@ -280,7 +280,7 @@ if seccion == "inicio":
 
             <nav class="navegacion">
 
-                <a class="opcion" href="/?seccion=inicio" target="_top">
+                <a class="opcion" href="/?seccion=bosque" target="_top">
                     <svg class="icono" viewBox="0 0 24 24"
                          fill="none" stroke="currentColor"
                          stroke-width="1.5">
@@ -342,7 +342,17 @@ if seccion == "inicio":
 
     st.html(portada)
 
+# --------------------------------------------------
+# BOSQUE Y PÉRDIDA DE BOSQUE
+# --------------------------------------------------
 
+elif seccion == "bosque":
+
+    if st.button("← Volver a la portada"):
+        st.query_params["seccion"] = "inicio"
+        st.rerun()
+
+    mostrar_bosque()
 # --------------------------------------------------
 # MAPA DEPARTAMENTAL
 # --------------------------------------------------
