@@ -3,6 +3,8 @@ import plotly.express as px
 import streamlit.components.v1 as components
 import datos
 from bosque import mostrar_bosque
+import base64
+
 # --------------------------------------------------
 # CONFIGURACIÓN
 # --------------------------------------------------
@@ -151,10 +153,12 @@ if seccion == "inicio":
             }
 
             .portada {
-                position: relative;
-                width: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
                 height: 100vh;
-                min-height: 600px;
+                min-height: 100vh;
                 overflow: hidden;
 
                 background-image:
@@ -340,6 +344,15 @@ if seccion == "inicio":
     </html>
     """
 
+    st.markdown("""
+    <style>
+        .block-container {
+            padding: 0 !important;
+            max-width: 100% !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
     st.html(portada)
 
 # --------------------------------------------------
@@ -394,27 +407,53 @@ elif seccion == "ranking":
     # FILTRO DE AÑO
     anios = sorted(df["ANIO"].dropna().unique())
 
-    st.markdown("""
+    # IMAGEN PANORÁMICA Y BARRA SUPERIOR
+    with open("assets/bosque/bosque_loreto.jpg", "rb") as archivo:
+        imagen_base64 = base64.b64encode(archivo.read()).decode()
+
+    st.markdown(f"""
     <style>
-    .barra-superior {
-        background-color: #07552D;
+    .banner-ranking {{
+        position: relative;
         width: 100vw;
+        height: 380px;
         margin-left: calc(50% - 50vw);
         margin-top: -25px;
+        overflow: hidden;
+    }}
+
+    .banner-ranking img {{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+    }}
+
+    .barra-superior {{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: #A66C4B;
         padding: 18px 4%;
         box-sizing: border-box;
-    }
+        z-index: 10;
+    }}
 
-    .barra-superior a {
+    .barra-superior a {{
         color: white !important;
         text-decoration: none !important;
         font-size: 16px;
         font-weight: bold;
-    }
+    }}
     </style>
 
-    <div class="barra-superior">
-        <a href="/?seccion=inicio">← Inicio</a>
+    <div class="banner-ranking">
+        <img src="data:image/jpeg;base64,{imagen_base64}">
+        <div class="barra-superior">
+            <a href="/?seccion=inicio" target="_top">← Inicio</a>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
@@ -489,7 +528,7 @@ elif seccion == "ranking":
 
     with col1:
         st.markdown(f"""
-        <div style="background:#edf6ed; border:1px solid #d6e8d6;
+        <div style="background:rgba(166, 108, 75, 0.12); border:1px solid rgba(166, 108, 75, 0.25);
                     border-radius:12px; padding:14px; height:120px; box-sizing:border-box;">
             <div style="color:#000; font-size:12px; font-weight:600;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
@@ -509,7 +548,7 @@ elif seccion == "ranking":
     """, unsafe_allow_html=True)
 
     with col2:
-        st.markdown(f"""<div style="background:#edf6ed; border:1px solid #d6e8d6; border-radius:12px; padding:18px; height:120px; box-sizing:border-box;">
+        st.markdown(f"""<div style="background:rgba(166, 108, 75, 0.12); border:1px solid rgba(166, 108, 75, 0.25); border-radius:12px; padding:18px; height:120px; box-sizing:border-box;">
     <div style="color:#000; font-size:12px; font-weight:600;">
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:5px;">
     <path d="M8 21h8"/>
@@ -527,7 +566,7 @@ elif seccion == "ranking":
 
     with col3:
         st.markdown(f"""
-        <div style="background:#edf6ed; border:1px solid #d6e8d6;
+        <div style="background:rgba(166, 108, 75, 0.12); border:1px solid rgba(166, 108, 75, 0.25);
                     border-radius:12px; padding:18px; height:120px; box-sizing:border-box;">
             <div style="color:#000; font-size:12px; font-weight:600;">
                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
@@ -547,7 +586,7 @@ elif seccion == "ranking":
 
     with col4:
         st.markdown("""
-        <div style="background:#edf6ed; border:1px solid #d6e8d6;
+        <div style="background:rgba(166, 108, 75, 0.12); border:1px solid rgba(166, 108, 75, 0.25);
                     border-radius:12px; padding:18px; height:120px; box-sizing:border-box;">
             <div style="color:#000; font-size:12px; font-weight:600;">
                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
