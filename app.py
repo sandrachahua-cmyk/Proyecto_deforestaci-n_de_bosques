@@ -209,7 +209,7 @@ if seccion == "inicio":
                 left: 8%;
                 right: 8%;
                 display: grid;
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(3, 1fr);
                 gap: 25px;
             }
 
@@ -248,7 +248,7 @@ if seccion == "inicio":
                 }
 
                 .navegacion {
-                    grid-template-columns: repeat(2, 1fr);
+                    grid-template-columns: repeat(4, 1fr);
                     gap: 20px;
                     bottom: 5%;
                 }
@@ -324,18 +324,7 @@ if seccion == "inicio":
                     </span>
                 </a>
 
-                <a class="opcion" href="/?seccion=evolucion" target="_top">
-                    <svg class="icono" viewBox="0 0 24 24"
-                         fill="none" stroke="currentColor"
-                         stroke-width="1.5">
-                        <path d="M3 19V5"/>
-                        <path d="M3 19h19"/>
-                        <path d="M5 15l5-5 4 3 7-8"/>
-                    </svg>
-                    <span class="texto-opcion">
-                        EVOLUCIÓN ANUAL
-                    </span>
-                </a>
+                
 
             </nav>
 
@@ -719,31 +708,6 @@ elif seccion == "ranking":
 
 #ordenar los departamentos de 
 # --------------------------------------------------
-# EVOLUCIÓN ANUAL
-# --------------------------------------------------
-
-elif seccion == "evolucion":
-
-    st.markdown("""
-    <div class="contenido-seccion">
-        <div class="etiqueta-seccion">BOSQUES DEL PERÚ / TENDENCIAS</div>
-        <div class="titulo-seccion">Evolución anual</div>
-        <div class="descripcion-seccion">
-            Analiza cómo ha cambiado la pérdida de bosque húmedo amazónico
-            a lo largo del periodo 2001–2022 y compara la evolución
-            entre distintos departamentos.
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    if st.button("← Volver a la portada"):
-        st.query_params["seccion"] = "inicio"
-        st.rerun()
-
-    st.info(
-        "En esta sección incorporaremos los gráficos de evolución "
-        "anual y la comparación entre departamentos."
-    )
 
 
 # --------------------------------------------------
