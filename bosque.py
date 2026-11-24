@@ -682,8 +682,8 @@ def mostrar_bosque():
         )
 
         st.caption(
-            "Fotografía de referencia. "
-            "Autoría y licencia pendientes de incorporar."
+            "."
+            "cobertura de bosque"
         )
 
     with col_texto:
