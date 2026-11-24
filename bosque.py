@@ -1,3 +1,4 @@
+
 import streamlit as st
 from pathlib import Path
 from html import escape
@@ -13,6 +14,7 @@ CARPETA_IMAGENES = Path(__file__).resolve().parent / "assets" / "bosque"
 
 
 def buscar_imagen(nombre):
+
     archivo = CARPETA_IMAGENES / nombre
 
     if archivo.is_file():
@@ -21,6 +23,7 @@ def buscar_imagen(nombre):
     nombre_base = Path(nombre).stem
 
     for extension in [".jpg", ".jpeg", ".png", ".webp"]:
+
         archivo = CARPETA_IMAGENES / f"{nombre_base}{extension}"
 
         if archivo.is_file():
@@ -30,6 +33,7 @@ def buscar_imagen(nombre):
 
 
 def mostrar_fotografia(nombre, tipo="tarjeta"):
+
     archivo = buscar_imagen(nombre)
 
     if archivo is None:
@@ -83,12 +87,18 @@ def mostrar_indicador(etiqueta, valor, nota):
 
     st.markdown(
         f"""
-<div class="indicador">
-    <div class="indicador-etiqueta">{escape(str(etiqueta))}</div>
-    <div class="indicador-valor">{escape(str(valor))}</div>
-    <div class="indicador-nota">{escape(str(nota))}</div>
-</div>
-""",
+        <div class="indicador">
+            <div class="indicador-etiqueta">
+                {escape(str(etiqueta))}
+            </div>
+            <div class="indicador-valor">
+                {escape(str(valor))}
+            </div>
+            <div class="indicador-nota">
+                {escape(str(nota))}
+            </div>
+        </div>
+        """,
         unsafe_allow_html=True
     )
 
@@ -178,7 +188,7 @@ def mostrar_consecuencias():
     st.divider()
 
     st.markdown(
-        '<div class="etiqueta">04 / IMPACTOS AMBIENTALES</div>',
+        '<div class="etiqueta">05 / IMPACTOS AMBIENTALES</div>',
         unsafe_allow_html=True
     )
 
@@ -205,12 +215,14 @@ def mostrar_consecuencias():
                 with st.container(
                     key=f"mosaico_consecuencia_{indice}"
                 ):
+
                     st.image(
                         str(imagen),
                         use_container_width=True
                     )
 
             else:
+
                 st.warning(
                     f"Falta la imagen: {consecuencia['imagen']}"
                 )
@@ -220,6 +232,7 @@ def mostrar_consecuencias():
                 key=f"consecuencia_{indice}",
                 use_container_width=True
             ):
+
                 st.session_state.consecuencia_seleccionada = indice
 
     seleccion = st.session_state.consecuencia_seleccionada
@@ -242,6 +255,7 @@ def mostrar_consecuencias():
                 imagen = buscar_imagen(consecuencia["imagen"])
 
                 if imagen is not None:
+
                     st.image(
                         str(imagen),
                         use_container_width=True
@@ -263,12 +277,128 @@ def mostrar_consecuencias():
                     "Cerrar información",
                     key="cerrar_consecuencia"
                 ):
+
                     st.session_state.consecuencia_seleccionada = None
                     st.rerun()
 
 
 # ==================================================
-# 5. PÁGINA PRINCIPAL
+# 5. CONSERVACIÓN Y SOLUCIONES
+# ==================================================
+
+def mostrar_conservacion():
+
+    st.divider()
+
+    st.markdown(
+        '<div class="etiqueta">06 / CONSERVACIÓN Y SOLUCIONES</div>',
+        unsafe_allow_html=True
+    )
+
+    st.header("¿Cómo podemos proteger nuestros bosques?")
+
+    st.write(
+        "La conservación de los bosques amazónicos del Perú "
+        "requiere estrategias que integren la protección de "
+        "los ecosistemas, el desarrollo económico sostenible "
+        "y la participación de las comunidades locales."
+    )
+
+    estrategias = [
+        {
+            "titulo": "Restauración forestal",
+            "imagen": "restauracion.png",
+            "descripcion": (
+                "Recuperar los ecosistemas degradados mediante "
+                "la regeneración natural y el establecimiento "
+                "de especies nativas, favoreciendo la biodiversidad "
+                "y las funciones ecológicas del bosque."
+            )
+        },
+        {
+            "titulo": "Producción sostenible",
+            "imagen": "agroforesteria.png",
+            "descripcion": (
+                "Promover sistemas agroforestales, como el cultivo "
+                "de cacao y café bajo sombra, generando alternativas "
+                "económicas que reduzcan la presión sobre los bosques."
+            )
+        },
+        {
+            "titulo": "Participación comunitaria",
+            "imagen": "comunidades.png",
+            "descripcion": (
+                "Fortalecer la gestión territorial de las comunidades "
+                "indígenas y locales, reconociendo sus conocimientos "
+                "y su participación en la conservación de los "
+                "recursos forestales."
+            )
+        },
+        {
+            "titulo": "Monitoreo y fiscalización",
+            "imagen": "monitoreo.png",
+            "descripcion": (
+                "Utilizar tecnologías satelitales para detectar "
+                "cambios en la cobertura forestal y orientar "
+                "las acciones de vigilancia y fiscalización ambiental."
+            )
+        }
+    ]
+
+    for fila in range(0, len(estrategias), 2):
+
+        columnas = st.columns(2, gap="large")
+
+        for columna, estrategia in zip(
+            columnas, estrategias[fila:fila + 2]
+        ):
+
+            with columna:
+
+                with st.container(border=True):
+
+                    mostrar_fotografia(
+                        estrategia["imagen"],
+                        tipo="conservacion"
+                    )
+
+                    st.markdown(
+                        f'<div class="titulo-conservacion">'
+                        f'{escape(estrategia["titulo"])}'
+                        f'</div>',
+                        unsafe_allow_html=True
+                    )
+
+                    st.markdown(
+                        f'<div class="descripcion-conservacion">'
+                        f'{escape(estrategia["descripcion"])}'
+                        f'</div>',
+                        unsafe_allow_html=True
+                    )
+
+        st.write("")
+
+    st.divider()
+
+    with st.container(border=True):
+
+        st.subheader("Conservación y monitoreo en el Perú")
+
+        st.write(
+            "La plataforma GeoBosques del Ministerio del Ambiente "
+            "permite consultar información sobre la cobertura "
+            "forestal, la pérdida de bosque y las alertas "
+            "tempranas de deforestación."
+        )
+
+        st.link_button(
+            "Explorar la plataforma GeoBosques",
+            "https://geobosques.minam.gob.pe/"
+        )
+
+
+# ==================================================
+# 6. PÁGINA PRINCIPAL
 # ==================================================
 
 def mostrar_bosque():
@@ -278,202 +408,237 @@ def mostrar_bosque():
     # ==============================================
 
     st.markdown("""
-<style>
+    <style>
 
-/* Fondo general */
+    /* Fondo general */
 
-.stApp {
-    background-color: #F4F1E9;
-}
+    .stApp {
+        background-color: #F4F1E9;
+    }
 
-/* Contenedor principal */
+    /* Contenedor principal */
 
-.block-container {
-    max-width: 1250px;
-    padding-top: 3rem;
-    padding-bottom: 5rem;
-}
+    .block-container {
+        max-width: 1250px;
+        padding-top: 3rem;
+        padding-bottom: 5rem;
+    }
 
-/* Títulos */
+    /* Títulos */
 
-h1, h2, h3 {
-    color: #203C32 !important;
-    letter-spacing: -0.5px;
-}
+    h1, h2, h3 {
+        color: #203C32 !important;
+        letter-spacing: -0.5px;
+    }
 
-h1 {
-    font-size: 3rem !important;
-    font-weight: 750 !important;
-}
+    h1 {
+        font-size: 3rem !important;
+        font-weight: 750 !important;
+    }
 
-h2 {
-    font-weight: 700 !important;
-}
+    h2 {
+        font-weight: 700 !important;
+    }
 
-/* Párrafos */
+    /* Párrafos */
 
-p {
-    color: #292E2B;
-    line-height: 1.7;
-}
+    p {
+        color: #292E2B;
+        line-height: 1.7;
+    }
 
-/* Etiquetas */
+    /* Etiquetas */
 
-.etiqueta {
-    color: #526B52;
-    font-size: 0.78rem;
-    font-weight: 750;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-}
+    .etiqueta {
+        color: #526B52;
+        font-size: 0.78rem;
+        font-weight: 750;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
 
-/* ==========================================
-   FOTOGRAFÍAS DE LAS TARJETAS ECOLÓGICAS
-   ========================================== */
+    /* ==========================================
+       FOTOGRAFÍAS DE LAS TARJETAS ECOLÓGICAS
+       ========================================== */
 
-.st-key-imagen_tarjeta_clima img,
-.st-key-imagen_tarjeta_hidrografico img,
-.st-key-imagen_tarjeta_biodiversidad img,
-.st-key-imagen_tarjeta_suelo img {
-    width: 100% !important;
-    height: 260px !important;
-    object-fit: cover !important;
-    object-position: center !important;
-    border-radius: 12px;
-}
+    .st-key-imagen_tarjeta_clima img,
+    .st-key-imagen_tarjeta_hidrografico img,
+    .st-key-imagen_tarjeta_biodiversidad img,
+    .st-key-imagen_tarjeta_suelo img {
+        width: 100% !important;
+        height: 260px !important;
+        object-fit: cover !important;
+        object-position: center !important;
+        border-radius: 12px;
+    }
 
-/* ==========================================
-   FOTOGRAFÍAS DE CONSECUENCIAS
-   TODAS CON EL MISMO TAMAÑO
-   ========================================== */
+    /* ==========================================
+       FOTOGRAFÍAS DE CONSECUENCIAS
+       ========================================== */
 
-.st-key-mosaico_consecuencia_0 img,
-.st-key-mosaico_consecuencia_1 img,
-.st-key-mosaico_consecuencia_2 img,
-.st-key-mosaico_consecuencia_3 img {
-    width: 100% !important;
-    height: 205px !important;
-    object-fit: cover !important;
-    object-position: center !important;
-    border-radius: 12px;
-}
+    .st-key-mosaico_consecuencia_0 img,
+    .st-key-mosaico_consecuencia_1 img,
+    .st-key-mosaico_consecuencia_2 img,
+    .st-key-mosaico_consecuencia_3 img {
+        width: 100% !important;
+        height: 205px !important;
+        object-fit: cover !important;
+        object-position: center !important;
+        border-radius: 12px;
+    }
 
-/* Botones de consecuencias */
+    /* ==========================================
+       FOTOGRAFÍAS DE CONSERVACIÓN
+       TODAS CON EL MISMO TAMAÑO
+       ========================================== */
 
-.st-key-consecuencia_0 button,
-.st-key-consecuencia_1 button,
-.st-key-consecuencia_2 button,
-.st-key-consecuencia_3 button {
-    min-height: 52px;
-    border-radius: 10px;
-    background-color: #FFFEFA;
-    color: #203C32;
-    border: 1px solid #D8DDD2;
-}
+    .st-key-imagen_conservacion_restauracion img,
+    .st-key-imagen_conservacion_agroforesteria img,
+    .st-key-imagen_conservacion_comunidades img,
+    .st-key-imagen_conservacion_monitoreo img {
+        width: 100% !important;
+        height: 230px !important;
+        object-fit: cover !important;
+        object-position: center !important;
+        border-radius: 12px;
+    }
 
-.st-key-consecuencia_0 button:hover,
-.st-key-consecuencia_1 button:hover,
-.st-key-consecuencia_2 button:hover,
-.st-key-consecuencia_3 button:hover {
-    background-color: #E8ECE3;
-    border-color: #526B52;
-}
+    /* Títulos de conservación */
 
-/* Fotografía de portada */
+    .titulo-conservacion {
+        color: #203C32;
+        font-size: 1.4rem;
+        font-weight: 750;
+        margin-top: 12px;
+        margin-bottom: 12px;
+    }
 
-.st-key-imagen_portada_portada img {
-    width: 100% !important;
-    height: 350px !important;
-    object-fit: cover !important;
-    border-radius: 12px;
-}
+    /* Descripciones de conservación */
 
-/* Tarjetas */
+    .descripcion-conservacion {
+        color: #292E2B;
+        font-size: 0.98rem;
+        line-height: 1.7;
+        min-height: 145px;
+        margin-bottom: 10px;
+    }
 
-[data-testid="stVerticalBlockBorderWrapper"] {
-    background-color: #FFFEFA;
-    border: 1px solid #E1E3DA;
-    border-radius: 18px;
-    box-shadow: 0 4px 15px rgba(32, 60, 50, 0.04);
-}
+    /* Botones de consecuencias */
 
-/* Numeración */
+    .st-key-consecuencia_0 button,
+    .st-key-consecuencia_1 button,
+    .st-key-consecuencia_2 button,
+    .st-key-consecuencia_3 button {
+        min-height: 52px;
+        border-radius: 10px;
+        background-color: #FFFEFA;
+        color: #203C32;
+        border: 1px solid #D8DDD2;
+    }
 
-.numero-tarjeta {
-    color: #A36F50;
-    font-size: 0.76rem;
-    font-weight: 750;
-    letter-spacing: 1.3px;
-    margin-top: 10px;
-    margin-bottom: 8px;
-}
+    .st-key-consecuencia_0 button:hover,
+    .st-key-consecuencia_1 button:hover,
+    .st-key-consecuencia_2 button:hover,
+    .st-key-consecuencia_3 button:hover {
+        background-color: #E8ECE3;
+        border-color: #526B52;
+    }
 
-/* Títulos de tarjetas */
+    /* Fotografía de portada */
 
-.titulo-tarjeta {
-    color: #203C32;
-    font-size: 1.4rem;
-    font-weight: 750;
-    margin-bottom: 12px;
-}
+    .st-key-imagen_portada_portada img {
+        width: 100% !important;
+        height: 350px !important;
+        object-fit: cover !important;
+        border-radius: 12px;
+    }
 
-/* Descripciones */
+    /* Tarjetas */
 
-.descripcion-tarjeta {
-    color: #292E2B;
-    font-size: 0.98rem;
-    line-height: 1.7;
-    min-height: 65px;
-    margin-bottom: 18px;
-}
+    [data-testid="stVerticalBlockBorderWrapper"] {
+        background-color: #FFFEFA;
+        border: 1px solid #E1E3DA;
+        border-radius: 18px;
+        box-shadow: 0 4px 15px rgba(32, 60, 50, 0.04);
+    }
 
-/* Desplegables */
+    /* Numeración */
 
-[data-testid="stExpander"] {
-    border-radius: 10px;
-}
+    .numero-tarjeta {
+        color: #A36F50;
+        font-size: 0.76rem;
+        font-weight: 750;
+        letter-spacing: 1.3px;
+        margin-top: 10px;
+        margin-bottom: 8px;
+    }
 
-/* Indicadores estadísticos */
+    /* Títulos de tarjetas */
 
-.indicador {
-    background: #FFFEFA;
-    border: 1px solid #E1E3DA;
-    border-radius: 16px;
-    padding: 28px 20px;
-    min-height: 190px;
-    box-shadow: 0 4px 15px rgba(32, 60, 50, 0.04);
-}
+    .titulo-tarjeta {
+        color: #203C32;
+        font-size: 1.4rem;
+        font-weight: 750;
+        margin-bottom: 12px;
+    }
 
-.indicador-etiqueta {
-    color: #526B52;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
+    /* Descripciones */
 
-.indicador-valor {
-    color: #203C32;
-    font-size: clamp(1.7rem, 3vw, 2.5rem);
-    font-weight: 800;
-    margin: 16px 0 12px;
-}
+    .descripcion-tarjeta {
+        color: #292E2B;
+        font-size: 0.98rem;
+        line-height: 1.7;
+        min-height: 65px;
+        margin-bottom: 18px;
+    }
 
-.indicador-nota {
-    color: #626B62;
-    font-size: 0.88rem;
-    line-height: 1.5;
-}
+    /* Desplegables */
 
-/* Separadores */
+    [data-testid="stExpander"] {
+        border-radius: 10px;
+    }
 
-hr {
-    border-color: #D8DDD2 !important;
-}
+    /* Indicadores estadísticos */
 
-</style>
-""", unsafe_allow_html=True)
+    .indicador {
+        background: #FFFEFA;
+        border: 1px solid #E1E3DA;
+        border-radius: 16px;
+        padding: 28px 20px;
+        min-height: 190px;
+        box-shadow: 0 4px 15px rgba(32, 60, 50, 0.04);
+    }
+
+    .indicador-etiqueta {
+        color: #526B52;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .indicador-valor {
+        color: #203C32;
+        font-size: clamp(1.7rem, 3vw, 2.5rem);
+        font-weight: 800;
+        margin: 16px 0 12px;
+    }
+
+    .indicador-nota {
+        color: #626B62;
+        font-size: 0.88rem;
+        line-height: 1.5;
+    }
+
+    /* Separadores */
+
+    hr {
+        border-color: #D8DDD2 !important;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
 
     # ==============================================
     # ENCABEZADO
@@ -760,14 +925,62 @@ hr {
         """)
 
     # ==============================================
-    # 04. CONSECUENCIAS AMBIENTALES
+    # 04. CAUSAS DE LA PÉRDIDA DE BOSQUE
+        st.divider()
+
+    st.markdown(
+        '<div class="etiqueta">04 / CAUSAS DE LA PÉRDIDA FORESTAL</div>',
+        unsafe_allow_html=True
+    )
+
+    st.header("¿Por qué estamos perdiendo nuestros bosques?")
+
+    st.write(
+        "La pérdida de bosque húmedo amazónico en el Perú "
+        "está asociada a diversas actividades humanas que "
+        "transforman la cobertura forestal y modifican "
+        "el uso del territorio."
+    )
+
+    st.write(
+        "El siguiente video explica los principales factores "
+        "asociados a la pérdida de bosque en la Amazonía peruana."
+    )
+
+    video = CARPETA_IMAGENES / "causas_deforestacion.mp4"
+
+    if video.is_file():
+
+        st.video(str(video))
+
+    else:
+
+        st.warning("No se encontró el archivo del video.")
+
+    st.caption(
+        "Video educativo elaborado mediante Google NotebookLM "
+        "a partir de fuentes bibliográficas, con fines académicos. "
+        "Contiene recursos audiovisuales generados mediante IA."
+    )
+    # Pendiente de incorporar el video de NotebookLM
+    # ==============================================
+
+
+    # ==============================================
+    # 05. CONSECUENCIAS AMBIENTALES
     # ==============================================
 
     mostrar_consecuencias()
 
+    # ==============================================
+    # 06. CONSERVACIÓN Y SOLUCIONES
+    # ==============================================
+
+    mostrar_conservacion()
+
 
 # ==================================================
-# 6. EJECUCIÓN DE PRUEBA
+# 7. EJECUCIÓN DE PRUEBA
 # ==================================================
 
 if __name__ == "__main__":
