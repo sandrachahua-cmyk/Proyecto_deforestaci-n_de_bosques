@@ -350,9 +350,29 @@ if seccion == "inicio":
 
 elif seccion == "bosque":
 
-    if st.button("← Volver a la portada"):
-        st.query_params["seccion"] = "inicio"
-        st.rerun()
+    st.markdown("""
+    <style>
+    .barra-superior {
+        background-color: #A66C4B;
+        width: 100vw;
+        margin-left: calc(50% - 50vw);
+        margin-top: -25px;
+        padding: 18px 4%;
+        box-sizing: border-box;
+    }
+
+    .barra-superior a {
+        color: white !important;
+        text-decoration: none !important;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    </style>
+
+    <div class="barra-superior">
+        <a href="/?seccion=inicio" target="_top">← Inicio</a>
+    </div>
+    """, unsafe_allow_html=True)
 
     mostrar_bosque()
 # --------------------------------------------------

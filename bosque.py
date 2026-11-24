@@ -427,7 +427,7 @@ def mostrar_bosque():
     /* Títulos */
 
     h1, h2, h3 {
-        color: #203C32 !important;
+        color: #000000 !important;
         letter-spacing: -0.5px;
     }
 
@@ -443,14 +443,14 @@ def mostrar_bosque():
     /* Párrafos */
 
     p {
-        color: #292E2B;
+        color: #000000 !important;
         line-height: 1.7;
     }
 
     /* Etiquetas */
 
     .etiqueta {
-        color: #526B52;
+        color: #000000;
         font-size: 0.78rem;
         font-weight: 750;
         letter-spacing: 2px;
@@ -507,7 +507,7 @@ def mostrar_bosque():
     /* Títulos de conservación */
 
     .titulo-conservacion {
-        color: #203C32;
+        color: #000000;
         font-size: 1.4rem;
         font-weight: 750;
         margin-top: 12px;
@@ -517,7 +517,7 @@ def mostrar_bosque():
     /* Descripciones de conservación */
 
     .descripcion-conservacion {
-        color: #292E2B;
+        color: #000000;
         font-size: 0.98rem;
         line-height: 1.7;
         min-height: 145px;
@@ -566,7 +566,7 @@ def mostrar_bosque():
     /* Numeración */
 
     .numero-tarjeta {
-        color: #A36F50;
+        color: #000000;
         font-size: 0.76rem;
         font-weight: 750;
         letter-spacing: 1.3px;
@@ -577,7 +577,7 @@ def mostrar_bosque():
     /* Títulos de tarjetas */
 
     .titulo-tarjeta {
-        color: #203C32;
+        color: #000000;
         font-size: 1.4rem;
         font-weight: 750;
         margin-bottom: 12px;
@@ -586,7 +586,7 @@ def mostrar_bosque():
     /* Descripciones */
 
     .descripcion-tarjeta {
-        color: #292E2B;
+        color: #000000;
         font-size: 0.98rem;
         line-height: 1.7;
         min-height: 65px;
@@ -611,7 +611,7 @@ def mostrar_bosque():
     }
 
     .indicador-etiqueta {
-        color: #526B52;
+        color: #000000;
         font-size: 0.8rem;
         font-weight: 700;
         text-transform: uppercase;
@@ -619,14 +619,14 @@ def mostrar_bosque():
     }
 
     .indicador-valor {
-        color: #203C32;
+        color: #000000;
         font-size: clamp(1.7rem, 3vw, 2.5rem);
         font-weight: 800;
         margin: 16px 0 12px;
     }
 
     .indicador-nota {
-        color: #626B62;
+        color: #000000;
         font-size: 0.88rem;
         line-height: 1.5;
     }
@@ -651,7 +651,10 @@ def mostrar_bosque():
         unsafe_allow_html=True
     )
 
-    st.title("Bosques amazónicos")
+    st.markdown(
+        '<h1 style="color: #000000 !important;">BOSQUES AMAZÓNICOS</h1>',
+        unsafe_allow_html=True
+    )
 
     st.markdown(
         "### Dinámica de la pérdida de cobertura forestal en el Perú"
@@ -739,7 +742,7 @@ def mostrar_bosque():
 
     col1, col2 = st.columns(
         2,
-        gap="large"
+        gap="medium"
     )
 
     with col1:
@@ -785,7 +788,7 @@ def mostrar_bosque():
 
     col3, col4 = st.columns(
         2,
-        gap="large"
+        gap="medium"
     )
 
     with col3:
