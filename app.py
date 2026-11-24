@@ -3,6 +3,7 @@ import plotly.express as px
 import streamlit.components.v1 as components
 import datos
 from bosque import mostrar_bosque
+from mapa import mostrar_mapa
 import base64
 
 # --------------------------------------------------
@@ -380,33 +381,10 @@ elif seccion == "bosque":
 # --------------------------------------------------
 
 elif seccion == "mapa":
-
-    st.markdown("""
-    <div class="contenido-seccion">
-        <div class="etiqueta-seccion">BOSQUES DEL PERÚ / EXPLORACIÓN</div>
-        <div class="titulo-seccion">Mapa departamental</div>
-        <div class="descripcion-seccion">
-            Explora la distribución territorial de la pérdida de bosque
-            húmedo amazónico en los departamentos del Perú durante el
-            periodo 2001–2022.
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    if st.button("← Volver a la portada"):
-        st.query_params["seccion"] = "inicio"
-        st.rerun()
-
-    st.info(
-        "En esta sección incorporaremos el mapa interactivo, "
-        "el selector de departamentos y la información provincial."
-    )
-
-
+    mostrar_mapa()
 # --------------------------------------------------
 # RANKING DEPARTAMENTAL
 # --------------------------------------------------
-
 
 elif seccion == "ranking":
 
