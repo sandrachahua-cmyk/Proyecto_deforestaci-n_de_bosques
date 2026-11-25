@@ -4,7 +4,10 @@ import streamlit.components.v1 as components
 import datos
 from bosque import mostrar_bosque
 from mapa import mostrar_mapa
+from comparacion import mostrar_comparacion
 import base64
+from textwrap import dedent
+
 
 # --------------------------------------------------
 # CONFIGURACIÓN
@@ -18,11 +21,13 @@ st.set_page_config(
 )
 
 
+# --------------------------------------------------
 # ESTILOS GENERALES
 # --------------------------------------------------
 
 st.markdown("""
 <style>
+
     #MainMenu, footer, header {
         visibility: hidden;
     }
@@ -86,7 +91,6 @@ st.markdown("""
         color: #000000;
     }
 
-        /* INDICADORES */
     div[data-testid="stMetricLabel"],
     div[data-testid="stMetricLabel"] * {
         color: #000000 !important;
@@ -102,19 +106,17 @@ st.markdown("""
         font-size: 23px !important;
     }
 
-    /* TÍTULOS DE LOS GRÁFICOS */
     .stMarkdown h3 {
         font-size: 19px !important;
         color: #000000 !important;
     }
 
-    /* SELECTOR DE AÑO */
     div[data-baseweb="select"] * {
         color: #000000 !important;
     }
+
 </style>
 """, unsafe_allow_html=True)
-
 
 
 # --------------------------------------------------
@@ -244,12 +246,13 @@ if seccion == "inicio":
             }
 
             @media (max-width: 750px) {
+
                 .contenido {
                     top: 27%;
                 }
 
                 .navegacion {
-                    grid-template-columns: repeat(4, 1fr);
+                    grid-template-columns: repeat(3, 1fr);
                     gap: 20px;
                     bottom: 5%;
                 }
@@ -258,6 +261,7 @@ if seccion == "inicio":
                     font-size: 10px;
                 }
             }
+
         </style>
     </head>
 
@@ -286,46 +290,59 @@ if seccion == "inicio":
             <nav class="navegacion">
 
                 <a class="opcion" href="/?seccion=bosque" target="_top">
+
                     <svg class="icono" viewBox="0 0 24 24"
                          fill="none" stroke="currentColor"
                          stroke-width="1.5">
+
                         <path d="M3 10.5L12 3l9 7.5"/>
                         <path d="M5.5 9.5V21h13V9.5"/>
                         <path d="M9 21v-7h6v7"/>
+
                     </svg>
+
                     <span class="texto-opcion">
                         BOSQUE Y PÉRDIDA DE BOSQUE
                     </span>
+
                 </a>
 
                 <a class="opcion" href="/?seccion=mapa" target="_top">
+
                     <svg class="icono" viewBox="0 0 24 24"
                          fill="none" stroke="currentColor"
                          stroke-width="1.5">
+
                         <path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/>
                         <path d="M9 3v15"/>
                         <path d="M15 6v15"/>
+
                     </svg>
+
                     <span class="texto-opcion">
                         MAPA DEPARTAMENTAL
                     </span>
+
                 </a>
 
                 <a class="opcion" href="/?seccion=ranking" target="_top">
+
                     <svg class="icono" viewBox="0 0 24 24"
                          fill="none" stroke="currentColor"
                          stroke-width="1.5">
+
                         <path d="M4 20V12"/>
                         <path d="M10 20V7"/>
                         <path d="M16 20V3"/>
                         <path d="M22 20H2"/>
+
                     </svg>
+
                     <span class="texto-opcion">
                         RANKING DEPARTAMENTAL
                     </span>
-                </a>
 
-                
+                </a>
 
             </nav>
 
@@ -345,6 +362,7 @@ if seccion == "inicio":
 
     st.html(portada)
 
+
 # --------------------------------------------------
 # BOSQUE Y PÉRDIDA DE BOSQUE
 # --------------------------------------------------
@@ -353,6 +371,7 @@ elif seccion == "bosque":
 
     st.markdown("""
     <style>
+
     .barra-superior {
         background-color: #A66C4B;
         width: 100vw;
@@ -368,6 +387,7 @@ elif seccion == "bosque":
         font-size: 16px;
         font-weight: bold;
     }
+
     </style>
 
     <div class="barra-superior">
@@ -376,30 +396,31 @@ elif seccion == "bosque":
     """, unsafe_allow_html=True)
 
     mostrar_bosque()
+
+
 # --------------------------------------------------
 # MAPA DEPARTAMENTAL
 # --------------------------------------------------
 
 elif seccion == "mapa":
+
     mostrar_mapa()
+
+
 # --------------------------------------------------
-# RANKING DEPARTAMENTAL
+# RANKING DEPARTAMENTAL Y COMPARACIÓN
 # --------------------------------------------------
 
 elif seccion == "ranking":
 
-    # CARGAR DATOS
-    df = datos.cargar_datos()
-
-    # FILTRO DE AÑO
-    anios = sorted(df["ANIO"].dropna().unique())
-
     # IMAGEN PANORÁMICA Y BARRA SUPERIOR
+
     with open("assets/bosque/bosque_loreto.jpg", "rb") as archivo:
         imagen_base64 = base64.b64encode(archivo.read()).decode()
 
-    st.markdown(f"""
+    st.html(f"""
     <style>
+
     .banner-ranking {{
         position: relative;
         width: 100vw;
@@ -434,278 +455,529 @@ elif seccion == "ranking":
         font-size: 16px;
         font-weight: bold;
     }}
+
     </style>
 
     <div class="banner-ranking">
+
         <img src="data:image/jpeg;base64,{imagen_base64}">
+
         <div class="barra-superior">
             <a href="/?seccion=inicio" target="_top">← Inicio</a>
         </div>
+
     </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("""
+    """)
+
+
+    # ENCABEZADO GENERAL
+
+    st.html("""
     <div style="padding: 15px 0 5px 0;">
-    <div style="color: #000000; font-size: 13px;
-    letter-spacing: 3px; font-weight: bold;">
-    BOSQUES DEL PERÚ / COMPARACIÓN
+
+        <div style="color: #000000; font-size: 13px;
+        letter-spacing: 3px; font-weight: bold;">
+
+            BOSQUES DEL PERÚ / COMPARACIÓN
+
+        </div>
+
+        <h1 style="color: #000000; font-size: 32px; margin: 5px 0;">
+
+            PÉRDIDA DE BOSQUE POR DEPARTAMENTO
+
+        </h1>
+
+        <p style="color: #000000; font-size: 15px; line-height: 1.6;">
+
+            ¿Qué departamentos registran mayor pérdida de bosque?
+
+        </p>
+
+        <p style="color: #000000; font-size: 15px; line-height: 1.6;">
+
+            Explora cómo se distribuye la pérdida de bosque húmedo
+            amazónico en los departamentos del Perú entre 2001 y 2022.
+            Consulta el ranking anual o compara la evolución acumulada
+            de los departamentos.
+
+        </p>
+
     </div>
-
-    <h1 style="color: #000000; font-size: 32px; margin: 5px 0;">
-    PÉRDIDA DE BOSQUE POR DEPARTAMENTO
-    </h1>
-
-    <p style="color: #000000; font-size: 15px; line-height: 1.6;">
-    ¿Qué departamentos registran mayor pérdida de bosque?
-
-    Explora cómo se distribuye la pérdida de bosque húmedo amazónico
-    en los departamentos del Perú entre 2001 y 2022.
-    Compara los resultados por año e identifica los departamentos
-    con mayores registros de pérdida.
-    </p>
-    </div>
-    """, unsafe_allow_html=True)
+    """)
 
 
+    # ==========================================
+    # BOTONES CENTRADOS DE NAVEGACIÓN
+    # ==========================================
 
-
-    
-
-    anio_seleccionado = st.selectbox(
-        "Año de análisis:",
-        anios
-    )
-
-    # OBTENER RANKING
-    ranking = datos.obtener_ranking(df, anio_seleccionado)
-    ranking = ranking.sort_values(ascending=False)
-
-    ranking_df = ranking.rename(
-        "PERDIDA_BOSQUE"
-    ).reset_index()
-
-    ranking_df.columns = [
-        "DEPARTAMENTO",
-        "PERDIDA_BOSQUE"
-    ]
-
-    # INDICADORES
-    perdida_total = ranking.sum()
-    primer_lugar = ranking.idxmax()
-    departamentos_evaluados = ranking.count()
-
-    
-
-
-    st.markdown("""
+    st.html("""
     <style>
-    div[data-testid="stMetric"] {
-        min-height: 120px;
-        height: 120px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 15px !important;
-        box-sizing: border-box;
+
+    .st-key-nav_ranking button,
+    .st-key-nav_comparacion button {
+        width: 100% !important;
+        height: 60px !important;
+        min-height: 60px !important;
+        border-radius: 6px !important;
+        border: 1px solid #D2B48C !important;
+        font-weight: 600 !important;
+        color: #000000 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 10px !important;
     }
+
+    .st-key-nav_ranking button p,
+    .st-key-nav_comparacion button p {
+        font-size: 15px !important;
+        font-weight: 600 !important;
+        color: #000000 !important;
+        text-align: center !important;
+        margin: 0 !important;
+    }
+
+    .st-key-nav_ranking button[kind="primary"],
+    .st-key-nav_comparacion button[kind="primary"] {
+        background-color: #D2B48C !important;
+        border-color: #A66C4B !important;
+    }
+
+    .st-key-nav_ranking button[kind="secondary"],
+    .st-key-nav_comparacion button[kind="secondary"] {
+        background-color: #FFFFFF !important;
+    }
+
+    .st-key-nav_ranking button:hover,
+    .st-key-nav_comparacion button:hover {
+        background-color: #E8D6BF !important;
+        border-color: #A66C4B !important;
+    }
+
     </style>
-    """, unsafe_allow_html=True)
+    """)
 
-    col1, col2, col3, col4 = st.columns(4)
 
-    with col1:
-        st.markdown(f"""
-        <div style="background:rgba(166, 108, 75, 0.12); border:1px solid rgba(166, 108, 75, 0.25);
-                    border-radius:12px; padding:14px; height:120px; box-sizing:border-box;">
-            <div style="color:#000; font-size:12px; font-weight:600;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                viewBox="0 0 24 24" fill="none" stroke="#000000"
-                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
-                style="vertical-align:middle; margin-right:5px;">
-                <path d="M12 22v-7"/>
-                <path d="M5 12a7 7 0 1 1 14 0c0 3-3 5-7 5s-7-2-7-5Z"/>
-                <path d="M8 10c1 1 2 1 4 1s3 0 4-1"/>
-                </svg>
-                PÉRDIDA TOTAL
-        </div>
-        <div style="color:#000; font-size:21px; margin-top:8px;">
-            {perdida_total:,.0f} ha
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    # ESTADO DEL APARTADO SELECCIONADO
 
-    with col2:
-        st.markdown(f"""<div style="background:rgba(166, 108, 75, 0.12); border:1px solid rgba(166, 108, 75, 0.25); border-radius:12px; padding:18px; height:120px; box-sizing:border-box;">
-    <div style="color:#000; font-size:12px; font-weight:600;">
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:5px;">
-    <path d="M8 21h8"/>
-    <path d="M12 17v4"/>
-    <path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/>
-    <path d="M7 6H4v2a4 4 0 0 0 4 4"/>
-    <path d="M17 6h3v2a4 4 0 0 1-4 4"/>
-    </svg>
-    PRIMER LUGAR
-    </div>
-    <div style="color:#000; font-size:21px; margin-top:8px;">
-    {primer_lugar}
-    </div>
-    </div>""", unsafe_allow_html=True)
+    if "vista_ranking" not in st.session_state:
+        st.session_state["vista_ranking"] = "Ranking anual"
 
-    with col3:
-        st.markdown(f"""
-        <div style="background:rgba(166, 108, 75, 0.12); border:1px solid rgba(166, 108, 75, 0.25);
-                    border-radius:12px; padding:18px; height:120px; box-sizing:border-box;">
-            <div style="color:#000; font-size:12px; font-weight:600;">
-                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                viewBox="0 0 24 24" fill="none" stroke="#000000"
-                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
-                style="vertical-align:middle; margin-right:5px;">
-                <rect x="4" y="4" width="16" height="16" rx="2"/>
-                <path d="M8 9h8M8 13h8M8 17h5"/>
-                </svg>
-                DEPARTAMENTOS EVALUADOS
-        </div>
-        <div style="color:#000; font-size:21px; margin-top:8px;">
-            {departamentos_evaluados}
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
 
-    with col4:
-        st.markdown("""
-        <div style="background:rgba(166, 108, 75, 0.12); border:1px solid rgba(166, 108, 75, 0.25);
-                    border-radius:12px; padding:18px; height:120px; box-sizing:border-box;">
-            <div style="color:#000; font-size:12px; font-weight:600;">
-               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-               viewBox="0 0 24 24" fill="none" stroke="#000000"
-               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
-               style="vertical-align:middle; margin-right:5px;">
-               <path d="M12 22V12"/>
-               <path d="M12 15C5 15 3 10 3 5c5 0 9 2 9 7"/>
-               <path d="M12 12c0-5 3-8 9-8 0 5-2 9-9 9"/>
-               </svg>
-               UNIDAD DE ANÁLISIS 
-        </div>
-        <div style="color:#000; font-size:21px; margin-top:8px;">
-            Hectáreas (ha)
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    # COLUMNAS SIMÉTRICAS PARA CENTRAR LOS BOTONES
 
-    # GRÁFICOS
-   
-
-    
-    # ==========================================
-    # GRÁFICO DE DONA
-    # ==========================================
-
-    st.markdown(
-        f"### Participación de la pérdida por departamento ({anio_seleccionado})"
+    espacio1, boton1, boton2, espacio2 = st.columns(
+        [1, 3, 3, 1],
+        gap="medium"
     )
 
-    fig_dona = px.pie(
-        ranking_df,
-        names="DEPARTAMENTO",
-        values="PERDIDA_BOSQUE",
-        hole=0.55
-    )
 
-    fig_dona.update_traces(
-        textposition="inside",
-        textinfo="percent",
-        textfont=dict(color="#ffffff"),
-        hovertemplate=(
-            "<b>%{label}</b><br>"
-            "Pérdida: %{value:,.2f} ha<br>"
-            "Participación: %{percent}"
-            "<extra></extra>"
+    # BOTÓN DE RANKING ANUAL
+
+    with boton1:
+
+        if st.button(
+            "Ranking anual",
+            key="nav_ranking",
+            use_container_width=True,
+            type=(
+                "primary"
+                if st.session_state["vista_ranking"] == "Ranking anual"
+                else "secondary"
+            )
+        ):
+
+            st.session_state["vista_ranking"] = "Ranking anual"
+
+            st.rerun()
+
+
+    # BOTÓN DE COMPARACIÓN ACUMULADA
+
+    with boton2:
+
+        if st.button(
+            "Comparación acumulada",
+            key="nav_comparacion",
+            use_container_width=True,
+            type=(
+                "primary"
+                if st.session_state["vista_ranking"] == "Comparación acumulada"
+                else "secondary"
+            )
+        ):
+
+            st.session_state["vista_ranking"] = "Comparación acumulada"
+
+            st.rerun()
+
+
+    apartado = st.session_state["vista_ranking"]
+
+    st.divider()
+
+
+    # ==========================================
+    # APARTADO 1: RANKING ANUAL
+    # ==========================================
+
+    if apartado == "Ranking anual":
+
+        # CARGAR DATOS
+
+        df = datos.cargar_datos()
+
+
+        # SELECTOR DE AÑOS
+
+        anios = sorted(df["ANIO"].dropna().unique())
+
+        anio_seleccionado = st.selectbox(
+            "Año de análisis:",
+            anios
         )
-    )
 
-    fig_dona.update_layout(
-        template="plotly_white",
-        colorway=[
-            "#064b27", "#078b3d", "#28b84c",
-            "#65cc70", "#a1dfa1", "#c8efc8"
-        ],
-        showlegend=True,
-        paper_bgcolor="#ffffff",
-        plot_bgcolor="#ffffff",
-        font=dict(color="#243b2b"),
-        legend=dict(
-            font=dict(color="#243b2b", size=11)
-        ),
-        height=480,
-        margin=dict(t=20, b=20, l=20, r=20),
-        separators=",."
-    )
 
-    st.plotly_chart(
-        fig_dona,
-        use_container_width=True
-    )
+        # OBTENER RANKING
 
-    # ==========================================
-    # GRÁFICO DE BARRAS HORIZONTAL
-    # ==========================================
+        ranking = datos.obtener_ranking(
+            df,
+            anio_seleccionado
+        )
 
-    st.markdown(
-        f"### Pérdida de bosque por departamento ({anio_seleccionado})"
-    )
+        ranking = ranking.sort_values(
+            ascending=False
+        )
 
-    fig = px.bar(
-        ranking_df,
-        x="PERDIDA_BOSQUE",
-        y="DEPARTAMENTO",
-        orientation="h",
-        labels={
-            "PERDIDA_BOSQUE": "Pérdida de bosque (ha)",
-            "DEPARTAMENTO": "Departamento"
+        ranking_df = ranking.rename(
+            "PERDIDA_BOSQUE"
+        ).reset_index()
+
+        ranking_df.columns = [
+            "DEPARTAMENTO",
+            "PERDIDA_BOSQUE"
+        ]
+
+
+        # INDICADORES
+
+        perdida_total = ranking.sum()
+
+        primer_lugar = ranking.idxmax()
+
+        departamentos_evaluados = ranking.count()
+
+
+        # ESTILOS DE LAS TARJETAS
+
+        st.html("""
+        <style>
+
+        .tarjeta-ranking {
+            background: rgba(166, 108, 75, 0.12);
+            border: 1px solid rgba(166, 108, 75, 0.25);
+            border-radius: 12px;
+            padding: 18px;
+            height: 120px;
+            box-sizing: border-box;
         }
-    )
 
-    fig.update_layout(
-        template="plotly_white",
-        yaxis={"autorange": "reversed"},
-        colorway=["#078b3d"],
-        paper_bgcolor="#ffffff",
-        plot_bgcolor="#ffffff",
-        font=dict(color="#243b2b"),
-        height=480,
-        separators=",.",
-        margin=dict(t=20, b=35, l=20, r=20)
-    )
+        .titulo-tarjeta-ranking {
+            color: #000000;
+            font-size: 12px;
+            font-weight: 600;
+        }
 
-    fig.update_yaxes(
-        tickfont=dict(color="#243b2b", size=11),
-        title_font=dict(color="#243b2b")
-    )
+        .valor-tarjeta-ranking {
+            color: #000000;
+            font-size: 21px;
+            margin-top: 8px;
+        }
 
-    fig.update_xaxes(
-        tickfont=dict(color="#243b2b", size=11),
-        title_font=dict(color="#243b2b"),
-        title_text="Pérdida de bosque (ha)",
-        tickformat=",.0f"
-    )
+        </style>
+        """)
 
-    fig.update_traces(
-        marker_color="#078b3d",
-        hovertemplate=(
-            "<b>Departamento:</b> %{y}<br>"
-            "<b>Pérdida de bosque:</b> %{x:,.2f} ha"
-            "<extra></extra>"
+
+        # ==========================================
+        # TARJETAS DE INDICADORES
+        # ==========================================
+
+        col1, col2, col3, col4 = st.columns(4)
+
+
+        # TARJETA 1: PÉRDIDA TOTAL
+
+        with col1:
+
+            st.markdown(dedent(f"""
+            <div class="tarjeta-ranking">
+            <div class="titulo-tarjeta-ranking">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:5px;">
+            <path d="M12 22v-7"/>
+            <path d="M5 12a7 7 0 1 1 14 0c0 3-3 5-7 5s-7-2-7-5Z"/>
+            <path d="M8 10c1 1 2 1 4 1s3 0 4-1"/>
+            </svg>
+            PÉRDIDA TOTAL
+            </div>
+            <div class="valor-tarjeta-ranking">
+            {perdida_total:,.0f} ha
+            </div>
+            </div>
+            """).strip(), unsafe_allow_html=True)
+
+
+        # TARJETA 2: PRIMER LUGAR
+
+        with col2:
+
+            st.markdown(dedent(f"""
+            <div class="tarjeta-ranking">
+            <div class="titulo-tarjeta-ranking">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:5px;">
+            <path d="M8 21h8"/>
+            <path d="M12 17v4"/>
+            <path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/>
+            <path d="M7 6H4v2a4 4 0 0 0 4 4"/>
+            <path d="M17 6h3v2a4 4 0 0 1-4 4"/>
+            </svg>
+            PRIMER LUGAR
+            </div>
+            <div class="valor-tarjeta-ranking">
+            {primer_lugar}
+            </div>
+            </div>
+            """).strip(), unsafe_allow_html=True)
+
+
+        # TARJETA 3: DEPARTAMENTOS EVALUADOS
+
+        with col3:
+
+            st.markdown(dedent(f"""
+            <div class="tarjeta-ranking">
+            <div class="titulo-tarjeta-ranking">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:5px;">
+            <rect x="4" y="4" width="16" height="16" rx="2"/>
+            <path d="M8 9h8M8 13h8M8 17h5"/>
+            </svg>
+            DEPARTAMENTOS EVALUADOS
+            </div>
+            <div class="valor-tarjeta-ranking">
+            {departamentos_evaluados}
+            </div>
+            </div>
+            """).strip(), unsafe_allow_html=True)
+
+
+        # TARJETA 4: UNIDAD DE ANÁLISIS
+
+        with col4:
+
+            st.markdown(dedent("""
+            <div class="tarjeta-ranking">
+            <div class="titulo-tarjeta-ranking">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:5px;">
+            <path d="M12 22V12"/>
+            <path d="M12 15C5 15 3 10 3 5c5 0 9 2 9 7"/>
+            <path d="M12 12c0-5 3-8 9-8 0 5-2 9-9 9"/>
+            </svg>
+            UNIDAD DE ANÁLISIS
+            </div>
+            <div class="valor-tarjeta-ranking">
+            Hectáreas (ha)
+            </div>
+            </div>
+            """).strip(), unsafe_allow_html=True)
+
+
+        # ==========================================
+        # GRÁFICO DE DONA
+        # ==========================================
+
+        st.markdown(
+            f"### Participación de la pérdida por departamento ({anio_seleccionado})"
         )
-    )
 
-    st.plotly_chart(
-        fig,
-        use_container_width=True
-    )
+        fig_dona = px.pie(
+            ranking_df,
+            names="DEPARTAMENTO",
+            values="PERDIDA_BOSQUE",
+            hole=0.55
+        )
+
+        fig_dona.update_traces(
+
+            textposition="inside",
+
+            textinfo="percent",
+
+            textfont=dict(
+                color="#ffffff"
+            ),
+
+            hovertemplate=(
+                "<b>%{label}</b><br>"
+                "Pérdida: %{value:,.2f} ha<br>"
+                "Participación: %{percent}"
+                "<extra></extra>"
+            )
+        )
+
+        fig_dona.update_layout(
+
+            template="plotly_white",
+
+            colorway=[
+                "#064b27",
+                "#078b3d",
+                "#28b84c",
+                "#65cc70",
+                "#a1dfa1",
+                "#c8efc8"
+            ],
+
+            showlegend=True,
+
+            paper_bgcolor="#ffffff",
+
+            plot_bgcolor="#ffffff",
+
+            font=dict(
+                color="#243b2b"
+            ),
+
+            legend=dict(
+                font=dict(
+                    color="#243b2b",
+                    size=11
+                )
+            ),
+
+            height=480,
+
+            margin=dict(
+                t=20,
+                b=20,
+                l=20,
+                r=20
+            ),
+
+            separators=",."
+        )
+
+        st.plotly_chart(
+            fig_dona,
+            use_container_width=True
+        )
 
 
-#ordenar los departamentos de 
-# --------------------------------------------------
+        # ==========================================
+        # GRÁFICO DE BARRAS HORIZONTAL
+        # ==========================================
+
+        st.markdown(
+            f"### Pérdida de bosque por departamento ({anio_seleccionado})"
+        )
+
+        fig = px.bar(
+
+            ranking_df,
+
+            x="PERDIDA_BOSQUE",
+
+            y="DEPARTAMENTO",
+
+            orientation="h",
+
+            labels={
+                "PERDIDA_BOSQUE": "Pérdida de bosque (ha)",
+                "DEPARTAMENTO": "Departamento"
+            }
+        )
+
+        fig.update_layout(
+
+            template="plotly_white",
+
+            yaxis={
+                "autorange": "reversed"
+            },
+
+            colorway=["#078b3d"],
+
+            paper_bgcolor="#ffffff",
+
+            plot_bgcolor="#ffffff",
+
+            font=dict(
+                color="#243b2b"
+            ),
+
+            height=480,
+
+            separators=",.",
+
+            margin=dict(
+                t=20,
+                b=35,
+                l=20,
+                r=20
+            )
+        )
+
+        fig.update_yaxes(
+
+            tickfont=dict(
+                color="#243b2b",
+                size=11
+            ),
+
+            title_font=dict(
+                color="#243b2b"
+            )
+        )
+
+        fig.update_xaxes(
+
+            tickfont=dict(
+                color="#243b2b",
+                size=11
+            ),
+
+            title_font=dict(
+                color="#243b2b"
+            ),
+
+            title_text="Pérdida de bosque (ha)",
+
+            tickformat=",.0f"
+        )
+
+        fig.update_traces(
+
+            marker_color="#078b3d",
+
+            hovertemplate=(
+                "<b>Departamento:</b> %{y}<br>"
+                "<b>Pérdida de bosque:</b> %{x:,.2f} ha"
+                "<extra></extra>"
+            )
+        )
+
+        st.plotly_chart(
+            fig,
+            use_container_width=True
+        )
+
+
+    # ==========================================
+    # APARTADO 2: COMPARACIÓN ACUMULADA
+    # ==========================================
+
+    elif apartado == "Comparación acumulada":
+
+        mostrar_comparacion()
 
 
 # --------------------------------------------------
@@ -713,5 +985,7 @@ elif seccion == "ranking":
 # --------------------------------------------------
 
 else:
+
     st.query_params["seccion"] = "inicio"
+
     st.rerun()
