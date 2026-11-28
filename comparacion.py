@@ -654,7 +654,9 @@ def mostrar_comparacion():
         theme=None,
         config={
             "responsive": True,
-            "displaylogo": False
+            "displaylogo": False,
+            "displayModeBar": False,
+            "staticPlot": True
         }
     )
 

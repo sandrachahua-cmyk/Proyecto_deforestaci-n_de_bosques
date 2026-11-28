@@ -675,9 +675,9 @@ elif seccion == "ranking":
         <style>
 
         .tarjeta-ranking {
-            background: rgba(166, 108, 75, 0.12);
-            border: 1px solid rgba(166, 108, 75, 0.25);
-            border-radius: 12px;
+            background: #D2B48C;
+            border: 1px solid #000000;
+            border-radius: 16px;
             padding: 18px;
             height: 120px;
             box-sizing: border-box;
@@ -967,7 +967,10 @@ elif seccion == "ranking":
 
         st.plotly_chart(
             fig,
-            use_container_width=True
+            use_container_width=True,
+            config={
+                "displayModeBar": False
+            }
         )
 
 
